@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <form id="Create_form">
+        <label for="">제목</label>
+        <input type="text" name="title">
+        <label for="">내용</label>
+        <textarea name="content"></textarea>
+        <button>추가하기</button>
+    </form>
+</body>
+<script>
+    Create_form.onsubmit =  async (e) => {
+        e.preventDefault();
+        const { title : {value : titleValue}, content : {value : contentValue}} = e.target;
+
+        try {
+            const {data}  = await axios.post('/plus', {titleValue, contentValue})
+            if(data.state === 200){
+                location.href = "/"
+            }
+        } catch (error) {
+            console.log("에러다 임마~", error)
+        }
+    }
+</script>
+</html>
