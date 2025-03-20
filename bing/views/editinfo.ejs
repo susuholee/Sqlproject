@@ -1,0 +1,49 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="../public/style.css">
+</head>
+<body>
+    <form action="" id="editform">
+        <label for="">name</label>
+        <input type="text" name="uname">
+        <label for="">nickname</label>
+        <input type="text" name="nname">
+        <label for="">gender</label>
+        <input type="text" name="gender">
+        <label for="">image</label>
+        <input type="file" name="image">
+        <button>확인</button>
+        <button type="button">취소</button>
+    </form>
+</body>
+<script>
+    editform.onsubmit = async (e) => {
+        e.preventDefault();
+        const {uname, nname, gender, image} = e.target;
+        const form = new FormData();
+        form.append('uname', uname.value);
+        form.append('nname', nname.value);
+        form.append('gender', gender.value);
+        form.append('image', image.files[0]);
+        console.log('hi')
+        const {data} = await axios.post('/editinfo?uid=<%= uid %>', form, {
+            header : {
+                'Content-Type' : 'multipart/form-data'
+            }
+        })
+        if(data.state === 200) {
+            location.href = '/login?uid=<%= uid %>'
+        }
+        else {
+            location.href = '/error'
+        }
+}
+</script>
+</html>

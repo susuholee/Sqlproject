@@ -1,0 +1,37 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../public/style.css">
+    <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+
+</head>
+<body>
+    <form action="" id="loginform">
+        <label for="">userid</label>
+        <input type="text" name="uid">
+        <label for="">password</label>
+        <input type="text" name="upw">
+        <button>로그인</button>
+        <button><a href="/signup">외원가입</a></button>
+    </form>
+</body>
+<script>
+    loginform.onsubmit = async (e) => {
+        e.preventDefault();
+        const {uid : {value : uidvalue}, upw : {value : upwvalue}} = e.target;
+        const {data} = await axios.post('/login', {uid : uidvalue, upw : upwvalue})
+        console.log(data,'asdfasd')
+        if(data.state === 200) {
+            location.href = `/login?uid=${data.uid}`
+        }
+        else {
+            alert('가입되지 않은 아이디 입니다')
+        }
+    }
+</script>
+</html>

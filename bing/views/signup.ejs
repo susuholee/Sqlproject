@@ -1,0 +1,56 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="../public/style.css">
+</head>
+<body>
+    <form action="" id="signupform">
+        <label for="">name</label>
+        <input type="text" name="uname">
+        <label for="">userid</label>
+        <input type="text" name="uid">
+        <label for="">password</label>
+        <input type="text" name="upw">
+        <label for="">retype password</label>
+        <input type="text" name="upw1">
+        <label for="">nickname</label>
+        <input type="text" name="nname">
+        <label for="">gender</label>
+        <input type="text" name="gender">
+        <label for="">image</label>
+        <input type="file" name="image">
+        <button>확인</button>
+        <button type="button">취소</button>
+    </form>
+</body>
+<script>
+    signupform.onsubmit = async (e) => {
+        e.preventDefault();
+        const {uid, upw, upw1, uname, nname, gender, image} = e.target;
+        const form = new FormData();
+        form.append('uname', uname.value)
+        form.append('uid', uid.value)
+        form.append('upw', upw.value)
+        form.append('upw1', upw1.value)
+        form.append('nname', nname.value)
+        form.append('gender', gender.value)
+        form.append('image', image.files[0])
+        const {data} = await axios.post('/signup', form, {
+            header : {'Content-Type' : 'multipart/form-data'}
+        })
+        // alert(data.message)
+        if (data.state === 200) {
+            location.href = '/'
+        }
+        else {
+            alert(data.message)
+        }
+    }
+</script>
+</html>
