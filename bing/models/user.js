@@ -47,7 +47,7 @@ const Logincheck = async (uid) => {
 
 const Usercheck = async (uid) => {
     try {
-        const [[data]] = await sqlpool.query("select userid from user where userid = ?;",[uid])
+        const [[data]] = await sqlpool.query("select * from user where userid = ?;",[uid])
         
         return data;
     } catch (error) {
@@ -57,8 +57,8 @@ const Usercheck = async (uid) => {
 
 const Updatecontent = async (uid, uname, nname,gender,imgpath) => {
     try {
-        const data = await sqlpool.query("update user set name=?, nickname=?, gender=?, imgpath=? where userid=?;", [uname, nname,gender,imgpath, uid])
-        return {state : 200, message : '수정 완료되었습니다'}
+        const [[data]] = await sqlpool.query("update user set name=?, nickname=?, gender=?, imgpath=? where userid=?;", [uname, nname,gender,imgpath, uid])
+        return data;
     } catch (error) {
         console.log(error)
         return {state : 408, message : error}

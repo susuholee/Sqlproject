@@ -33,15 +33,29 @@ const Createuser = async (uname, uid, upw, nname, gender, imgpath) => {
     }
 }
 
-const Updateinfo = async (uid, uname, nname,gender,imgpath) => {
+const Updateinfo = async (uid, uname, nname,gender,path) => {
     try {
-        
-        const data = await Updatecontent(uid, uname, nname,gender,imgpath)
-        return data;
+       
+        const update = await Updatecontent(uid, uname, nname,gender, path)
+        const data = await Logincheck(uid)
+        if(!data) {
+            return {state : 406, message : '아이디와 비밀번호 확인해주세요'};
+        }
+        console.log(data,'controller')
+        const {nickname, imgpath} = data;
+        const jwttoken = jwt.sign({nickname,imgpath}, process.env.TKN, {expiresIn : '30m'});
+        return ({state : 200, message : '로그인 성공', jwttoken})
     } catch (error) {
         return {state : 408, message : error}
     }
 }
 
+const Userselectcntrl = async (req, res, next) => {
+    const data =  req.headers.cookie.split('=')[1]
+    const userdata = jwt.verify(data, process.env.TKN)
+    req.user = userdata;
+    next();
+    
+}
 
-module.exports = {Createuser, Userlogin, Updateinfo}
+module.exports = {Createuser, Userlogin, Updateinfo, Userselectcntrl}

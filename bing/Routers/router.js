@@ -3,9 +3,9 @@
 
 
 const router = require('express').Router();
-const { Createuser, Userlogin, Updateinfo } = require('../controllers/controller');
+const { Createuser, Userlogin, Updateinfo, Userselectcntrl } = require('../controllers/controller');
 const { Imgupload } = require('../models/imguplaod');
-const { Deleteuser } = require('../models/user');
+const { Deleteuser, Usercheck } = require('../models/user');
 
 
 
@@ -17,10 +17,11 @@ router.get('/signup', (req, res) => {
     res.render('signup')
 })
 
-router.get('/login', async (req, res) => {
+router.get('/login',Userselectcntrl, async (req, res) => {
+    const {nickname, imgpath} = req.user;
     const {uid} = req.query;
-    const data = 
-    res.render('main', {uid})
+    console.log(nickname, imgpath, 'asdf')
+    res.render('main', {uid, nickname, imgpath})
 })
 
 router.get('/mypage', (req, res) => {
@@ -70,6 +71,13 @@ router.post('/editinfo', Imgupload.single('image'), async (req, res) => {
     const {uid} = req.query;
     console.log(req.body,path, req.query)
     const data = await Updateinfo(uid, uname, nname,gender,path)
+    const {jwttoken} = data;
+    if(data.state === 200) { 
+        res.cookie('login-token', jwttoken, {
+            maxAge : 10 * 60 * 60 * 1000,
+            httpOnly : true
+        })
+    }
     console.log(data, 'edit')
     res.json(data);
 })
