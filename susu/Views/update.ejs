@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    수정 페이지~
+    <form  action="/update" id="update_form" method="post">
+        <label for="">제목</label>
+        <input type="text" name="title">
+        <label for="">내용<%= data.content %></label>
+        <textarea name="content"></textarea>
+        <button>저장하기</button>
+    </form>
+</body>
+<script>
+update_form.onsubmit = async (e) => {
+    e.preventDefault();
+    const { title : {value : titleValue}, content : {value : contentValue}} = e.target;
+    
+    try {
+        const { data }  = await axios.put(`/update?index=<%= data.id %>`, {title: titleValue, content: contentValue})
+        if(data.state === 200){
+            location.href = "/"
+        }
+    } catch (error) {
+        console.log("에러야 썅", error)
+    }
+}
+</script>
+</html>
