@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
+    <%- include('headers') %>
     메인 페이지~ 입니다..
     <% for (let i = 0; i < data.length; i++) {%>
     <div class="container" onclick="mainBtn('<%= data[i].title %>')">
