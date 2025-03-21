@@ -39,7 +39,7 @@ const tableInit = async () => {
         console.log("comment 테이블을 생성합니다..")
     }
 }
-
+// --
 tableInit();
 
 module.exports = connectSql
