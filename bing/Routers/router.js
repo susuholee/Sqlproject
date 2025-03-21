@@ -3,19 +3,40 @@
 
 
 const router = require('express').Router();
-const { Createuser, Userlogin, Updateinfo, CreateBoard, GetBoard, GetBoardIndex, UpdateBoard, Userselectcntrl , DeleteBoard} = require('../controllers/controller');
+const { Createuser, Userlogin, Updateinfo, CreateBoard, GetBoard, GetBoardIndex, UpdateBoard, Userselectcntrl, Logintoken , DeleteBoard} = require('../controllers/controller');
 const { Imgupload } = require('../models/imguplaod');
-const { Deleteuser, Usercheck } = require('../models/user');
+const { Deleteuser, Usercheck, Addlike } = require('../models/user');
 
 // const {CreateBoard, GetBoard, GetBoardIndex, UpdateBoard} = require('../controllers/controller');
 // const router = require('express').Router();
 
 
-router.get('/login', async (req, res) => { 
-    const data =  await GetBoard();
+// router.get('/login', async (req, res) => { 
+//     const data =  await GetBoard();
+//     const {uid} = req.query;
+//     res.render('main', {data, uid})
+// })
+router.get('/login', Logintoken, async (req, res) => {
     const {uid} = req.query;
-    res.render('main', {data, uid})
+    const data =  await GetBoard();
+    const {nickname, imgpath} = await req.user;
+    console.log(req.user,'user')
+    res.render('main', {data, uid, nickname, imgpath})
 })
+router.get('/main', Logintoken, async (req, res) => {
+    const {uid} = req.query;
+    const data =  await GetBoard();
+    const {nickname, imgpath} = await req.user;
+    console.log(req.user,'user', data)
+    res.render('main', {data, uid, nickname, imgpath})
+})
+
+router.get('/userlike', Logintoken, async (req, res) => {
+    const {uid, boardid} = req.query;
+    const data = await Addlike(uid, boardid);
+    res.json(data);
+})
+
 router.get('/plus', async (req, res) => {
     const data =  await GetBoard();
     const {uid} = req.query;
@@ -96,11 +117,7 @@ router.get('/signup', (req, res) => {
     res.render('signup')
 })
 
-router.get('/login', async (req, res) => {
-    const {uid} = req.query;
-    const data = 
-    res.render('main', {uid})
-})
+
 
 router.get('/mypage', (req, res) => {
     const {uid} = req.query;

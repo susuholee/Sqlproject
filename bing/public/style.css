@@ -33,10 +33,55 @@ form {
 
 }
 #header ul {
+
+    align-items: center;
+    width: 200px;
     display: flex;
+    justify-content: space-around;
+
     
 }
 
 #header ul li {
-    margin-left: 30px;
+    margin-right: 30px;
+}
+
+#header img {
+    width: 35px;
+    height: 35px;
+    border-radius: 35px;
+}
+
+.container {
+    width: 300px;
+    height: 70px;
+    border: 1px solid;
+    border-bottom: none;
+}
+
+#bodywrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#bodywrap 
+
+.material-symbols-outlined {
+    border: 1px solid;
+    width: 300px;
+    border-top: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+#titlebar {
+    width: 150px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.active {
+    background-color: red;
 }

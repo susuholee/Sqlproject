@@ -5,8 +5,8 @@ const { Insertuser, Logincheck, Usercheck, Uploadcontent, Updatecontent } = requ
 
 const {CreateBoardData , SelctBoardData, SelectIndexData, UpdateData, DeleteData} = require('../models/user');
 
-const CreateBoard =  async (title, content, imgpath) => {
-    return await CreateBoardData(title, content, imgpath); 
+const CreateBoard =  async (title, content, uid) => {
+    return await CreateBoardData(title, content, uid); 
 }
 
 
@@ -82,6 +82,12 @@ const Updateinfo = async (uid, uname, nname,gender,path) => {
     }
 }
 
+const Logintoken = (req, res, next) => {
+    const data = req.headers.cookie.split('=')[1];
+    const userdata = jwt.verify(data, process.env.TKN);
+    req.user = userdata;
+    console.log(req.user, 'req')
+    next();
+}
 
-
-module.exports = {Createuser, Userlogin, Updateinfo, CreateBoard, GetBoardIndex, GetBoard, UpdateBoard, DeleteBoard}
+module.exports = {Createuser, Userlogin, Updateinfo, CreateBoard, GetBoardIndex, GetBoard, UpdateBoard}
