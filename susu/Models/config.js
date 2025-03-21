@@ -2,12 +2,12 @@ require('dotenv').config({path : "../.env"});
 const mysql2 = require('mysql2/promise');
 
 const connectSql =  mysql2.createPool({
-    user :  process.env.DB_USER,
-    password : process.env.DB_PWD,
-    database : process.env.DB_DATABSE,
+    user :  process.env.DATABASE_USER,
+    password : process.env.DATABASE_PAWSSWORD,
+    database : process.env.DATABASE_NAME,
     multipleStatements : true,
-    host : process.env.DB_HOST,
-    port : process.env.DB_PORT
+    host : process.env.DATABASE_HOST,
+    port : process.env.DATABASE_PORT
 })
 
 connectSql.getConnection((err) => {
@@ -19,7 +19,7 @@ const tableInit = async () => {
         await connectSql.query("SELECT * FROM board")
     } catch (error) {
         console.log("board 테이블이 존재하지 않아요~")
-        await connectSql.query("CREATE TABLE board(id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(30) NOT NULL, content VARCHAR(100) NOT NULL, image VARCHAR(50), userid VARCHAR(30))")
+        await connectSql.query("CREATE TABLE board(id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(30) NOT NULL, content VARCHAR(100) NOT NULL, image VARCHAR(50), boardid VARCHAR(30), constraint fk_board_id FOREIGN KEY boradid REFERENCES user(userid))")
         console.log("board 테이블을 생성합니다..")
     }
     
