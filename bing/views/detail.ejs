@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div><%= data.title %></div>
+    <div><%= data.content %></div>
+    <button class="fixed">수정하기</button>
+    <button>삭제하기</button>
+</body>
+<script>
+const fixed = document.querySelector('.fixed');
+    fixed.onclick = () => {
+        console.log('check')
+        location.href = `/update?title=<%= data.title %>`
+}
+
+</script>
+</html>

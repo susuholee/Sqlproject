@@ -1,18 +1,25 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    main page
-    <ul>
-        <li></li>
-        <li></li>
-    </ul>
+    메인 페이지~ 입니다..
+    <% for (let i = 0; i < data.length; i++) {%>
+    <div class="container" onclick="mainBtn('<%= data[i].title %>')">
+        <div>글 제목 : <%= data[i].title %></div>
+        <div>글 내용 : <%= data[i].content %></div>
+    </div>
+    <% } %>
     <button><a href="/mypage?uid=<%= uid %>">mypage</a></button>
 </body>
+<script>
+const mainBtn = async (title) => {
+    console.log('asdf')
+    location.href = `/detail?title=${title}`;
+} 
+</script>
 </html>
