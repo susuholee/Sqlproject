@@ -3,21 +3,44 @@
 
 
 const router = require('express').Router();
-const { Createuser, Userlogin, Updateinfo, CreateBoard, GetBoard, GetBoardIndex, UpdateBoard, Userselectcntrl } = require('../controllers/controller');
+const { Createuser, Userlogin, Updateinfo, CreateBoard, GetBoard, GetBoardIndex, UpdateBoard, Userselectcntrl, Logintoken } = require('../controllers/controller');
 const { Imgupload } = require('../models/imguplaod');
-const { Deleteuser, Usercheck } = require('../models/user');
+const { Deleteuser, Usercheck, Addlike } = require('../models/user');
 
 // const {CreateBoard, GetBoard, GetBoardIndex, UpdateBoard} = require('../controllers/controller');
 // const router = require('express').Router();
 
 
-router.get('/login', async (req, res) => { 
-    const data =  await GetBoard();
+// router.get('/login', async (req, res) => { 
+//     const data =  await GetBoard();
+//     const {uid} = req.query;
+//     res.render('main', {data, uid})
+// })
+router.get('/login', Logintoken, async (req, res) => {
     const {uid} = req.query;
-    res.render('main', {data, uid})
+    const data =  await GetBoard();
+    const {nickname, imgpath} = await req.user;
+    console.log(req.user,'user')
+    res.render('main', {data, uid, nickname, imgpath})
 })
+router.get('/main', Logintoken, async (req, res) => {
+    const {uid} = req.query;
+    const data =  await GetBoard();
+    const {nickname, imgpath} = await req.user;
+    console.log(req.user,'user', data)
+    res.render('main', {data, uid, nickname, imgpath})
+})
+
+router.get('/userlike', Logintoken, async (req, res) => {
+    const {uid, boardid} = req.query;
+    const data = await Addlike(uid, boardid);
+    res.json(data);
+})
+
 router.get('/plus', (req, res) => {
-    res.render('plus')
+    const {uid} = req.query;
+    
+    res.render('plus', {uid})
 })
 
 router.get('/detail', async (req, res) => {
@@ -25,7 +48,7 @@ router.get('/detail', async (req, res) => {
     const { title } = req.query;
     console.log(title)
     const data =  await GetBoardIndex(title);
-    console.log("누가 뜨니?", data.id);
+    // console.log("누가 뜨니?", data.id);
     res.render('detail', {data})
 })
 
@@ -40,11 +63,13 @@ router.get('/update', async (req, res) => {
 
 
 router.post('/plus', async (req, res) => {
+    
     try {
         const {titleValue, contentValue} = req.body;
-        console.log("너구나", titleValue, contentValue);
-        await CreateBoard(titleValue, contentValue);
-        res.json({state : 200, message : "게시판 작성 성공!!"});
+        const {uid} = req.query;
+        console.log("너구나", titleValue, contentValue, uid);
+        await CreateBoard(titleValue, contentValue, uid);
+        res.json({state : 200, message : "게시판 작성 성공!!", uid});
     } catch (error) {
         res.json({state:  404, message :  "오류야 오류!"});
     }
@@ -77,11 +102,7 @@ router.get('/signup', (req, res) => {
     res.render('signup')
 })
 
-router.get('/login', async (req, res) => {
-    const {uid} = req.query;
-    const data = 
-    res.render('main', {uid})
-})
+
 
 router.get('/mypage', (req, res) => {
     const {uid} = req.query;

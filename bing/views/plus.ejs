@@ -21,9 +21,9 @@
         const { title : {value : titleValue}, content : {value : contentValue}} = e.target;
 
         try {
-            const {data}  = await axios.post('/plus', {titleValue, contentValue})
+            const {data}  = await axios.post('/plus?uid=<%= uid %>', {titleValue, contentValue})
             if(data.state === 200){
-                location.href = "/main"
+                location.href = "/main?uid=<%= uid %>"
             }
         } catch (error) {
             console.log("에러다 임마~", error)
