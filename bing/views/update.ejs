@@ -10,9 +10,9 @@
     수정 페이지~
     <form  action="/update" id="update_form" method="post">
         <label for="">제목</label>
-        <input type="text" name="title">
-        <label for="">내용<%= data.content %></label>
-        <textarea name="content"></textarea>
+        <input type="text" name="title" value="<%= data.title %>">
+        <label for="">내용</label>
+        <textarea name="content"><%= data.content %></textarea>
         <button>저장하기</button>
     </form>
 </body>
@@ -22,7 +22,7 @@ update_form.onsubmit = async (e) => {
     const { title : {value : titleValue}, content : {value : contentValue}} = e.target;
     
     try {
-        const { data }  = await axios.put(`/update?index=<%= data.id %>`, {title: titleValue, content: contentValue})
+        const { data }  = await axios.put(`/update?uid=<%= data.id %>`, {title: titleValue, content: contentValue})
         if(data.state === 200){
             location.href = "/login"
         }

@@ -7,25 +7,20 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    main page
-    <ul>
-        <li><%= nickname %></li>
-        <img src="<%= imgpath %>" alt="">
-    </ul>
     <%- include('headers') %>
     메인 페이지~ 입니다..
     <% for (let i = 0; i < data.length; i++) {%>
-    <div class="container" onclick="mainBtn('<%= data[i].title %>')">
+    <div class="container" onclick="mainBtn('<%= data[i].id %>')">
         <div>글 제목 : <%= data[i].title %></div>
         <div>글 내용 : <%= data[i].content %></div>
+        <div>게시판 이미지 배너 <%= data[i].imgpath %></div>
     </div>
     <% } %>
-    <button><a href="/mypage?uid=<%= uid %>">mypage</a></button>
+    <button><a href="/mypage?uid=<%= data.id %>">mypage</a></button>
 </body>
 <script>
-const mainBtn = async (title) => {
-    console.log('asdf')
-    location.href = `/detail?uid=<%= uid %>`;
+const mainBtn = (uid) => {
+    location.href = `/detail?uid=${uid}`;
 } 
 </script>
 </html>

@@ -12,22 +12,30 @@
         <input type="text" name="title">
         <label for="">내용</label>
         <textarea name="content"></textarea>
+        <label for="">게시판 배너</label>
+        <input type="file" name="image">
         <button>추가하기</button>
     </form>
 </body>
 <script>
-    Create_form.onsubmit =  async (e) => {
+    Create_form.onsubmit = async (e) => {
         e.preventDefault();
-        const { title : {value : titleValue}, content : {value : contentValue}} = e.target;
-
+        const {title, content, image} = e.target;
+        const form = new FormData();
+        form.append("title", title.value);
+        form.append("content", content.value);
+        form.append("image", image.files[0]);
+        
         try {
-            const {data}  = await axios.post('/plus', {titleValue, contentValue})
-            if(data.state === 200){
-                location.href = "/main"
+            const { data } = await axios.post('/plus', form, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            if (data.state === 200) {
+                location.href = "/main";
             }
         } catch (error) {
-            console.log("에러다 임마~", error)
+            console.log("에러다 임마~", error);
         }
-    }
+    };
 </script>
 </html>

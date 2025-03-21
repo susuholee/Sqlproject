@@ -4,19 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <div><%= data.title %></div>
     <div><%= data.content %></div>
     <button class="fixed">수정하기</button>
-    <button>삭제하기</button>
+    <button class="delete_Btn">삭제하기</button>
 </body>
 <script>
 const fixed = document.querySelector('.fixed');
     fixed.onclick = () => {
         console.log('check')
-        location.href = `/update?title=<%= data.title %>`
+        location.href = `/update?uid=<%= data.id %>`
 }
 
+const delete_Btn = document.querySelector('.delete_Btn')
+delete_Btn.onclick = async () => {
+    const data = await axios.delete(`/delete?uid=<%= data.id %>`);
+    if (data.state = 200) {
+        location.href = '/main';
+    } else {
+        console.log("에러야 ㅠㅠ")
+    }
+};
 </script>
 </html>

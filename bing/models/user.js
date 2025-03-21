@@ -21,8 +21,8 @@ sqlpool.getConnection((err) => {
 const mysqlconnect = require('./config')
 
 
-const CreateBoardData = async (title, content) => {
-    await mysqlconnect.query(`INSERT INTO board(title, content) VALUES ('${title}', '${content}')`)
+const CreateBoardData = async (title, content, imgpath) => {
+    await mysqlconnect.query(`INSERT INTO board(title, content, imgpath) VALUES ('${title}', '${content}', '${imgpath}')`)
 }
 
 const SelctBoardData = async () => {
@@ -38,8 +38,8 @@ const SelctBoardData = async () => {
 
 const SelectIndexData = async (id) => {
     try {
-        const [[data]] =  await mysqlconnect.query("SELECT * FROM board WHERE title=?", [id])
-        return data;
+        const [[data]] =  await mysqlconnect.query("SELECT * FROM board WHERE id=?", [id])
+        return data || null;
     } catch (error) {
         console.log("에러 발생~", error);        
     }
@@ -47,7 +47,7 @@ const SelectIndexData = async (id) => {
 
 const UpdateData = async (id, title, content) => { 
     try {
-        const [data] = await mysqlconnect.query("UPDATE board SET title=?, content=? WHERE id=?", [id, title, content])
+        const [data] = await mysqlconnect.query("UPDATE board SET title=?, content=? WHERE id=?", [ title, content, id])
         return data;
     } catch (error) {
         console.log("에러 발생~", error);
